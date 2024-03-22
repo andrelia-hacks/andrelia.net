@@ -1,4 +1,9 @@
-baseURL = 'https://andrelia.net/'
+baseURL = '/'
 languageCode = 'en-us'
 title = 'Andrelia Hacks Stuff'
 theme = "hugo-bearcub"
+
+[languages]
+  [languages.en]
+    languageName = "English"
+
