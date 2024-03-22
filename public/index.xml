@@ -2,17 +2,17 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
   <channel>
     <title>Andrelia Hacks Stuff</title>
-    <link>/</link>
+    <link>//localhost:1313/</link>
     <description>Recent content on Andrelia Hacks Stuff</description>
     <generator>Hugo -- gohugo.io</generator>
-    <language>en</language>
+    <language>en-us</language>
     <lastBuildDate>Fri, 22 Mar 2024 14:11:45 -0400</lastBuildDate>
-    <atom:link href="/index.xml" rel="self" type="application/rss+xml" />
+    <atom:link href="//localhost:1313/index.xml" rel="self" type="application/rss+xml" />
     <item>
-      <title>T-Mobile: Signing Requests With Proof of Posession (PoP) Tokens</title>
-      <link>/posts/t-mobile-signing-requests-with-proof-of-posession-pop-tokens/</link>
+      <title>T-Mobile: Signing Requests With Proof of Possession (PoP) Tokens</title>
+      <link>//localhost:1313/posts/t-mobile-signing-requests-with-proof-of-possession-pop-tokens/</link>
       <pubDate>Fri, 22 Mar 2024 14:11:45 -0400</pubDate>
-      <guid>/posts/t-mobile-signing-requests-with-proof-of-posession-pop-tokens/</guid>
+      <guid>//localhost:1313/posts/t-mobile-signing-requests-with-proof-of-possession-pop-tokens/</guid>
       <description>Introduction In a typical authenticated API, leaked credentials allow an attacker to make API requests as the associated user for as long as the credentials are valid. With many REST APIs, these credentials come in the form of a bearer token, typically using JSON Web Tokens (JWTs).&#xA;The OAuth 2.0 bearer token specification, as defined in RFC6750, allows any party in possession of a bearer token to get access to the associated resources without demonstrating possession of a cryptographic key.</description>
       <content:encoded><![CDATA[<h2 id="introduction">Introduction</h2>
 <p>In a typical authenticated API, leaked credentials allow an attacker to make API requests as the associated user for as long as the credentials are valid. With many REST APIs, these credentials come in the form of a bearer token, typically using JSON Web Tokens (JWTs).</p>
@@ -25,132 +25,132 @@
 
 
 
-<pre tabindex="0"><code>Header: {alg, type}
-Body: {
-    iat: &lt;epoch time&gt;
-    exp: &lt;epoch time + 2 minutes&gt;
-    ehts: &lt;authorization; content_type; uri; http-method; body&gt; =&gt; All request headers, URI, HTTP method and body fields used to create hash
-    edts: &lt;Base64UrlSafeEncoding[SHA256(all ehts claim values as a concatenated string)]&gt;
-    jti: &lt;unique identifier&gt;
-    v: &#34;1&#34;
-}
-Signature: &lt;digitalSignature&gt;</code></pre><p>This token is then passed to T-Mobile API endpoints via the <code>X-Authentication</code> header, along with the access token in the <code>Authorization</code> header.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-fallback" data-lang="fallback"><span style="display:flex;"><span>Header: {alg, type}
+</span></span><span style="display:flex;"><span>Body: {
+</span></span><span style="display:flex;"><span>    iat: &lt;epoch time&gt;
+</span></span><span style="display:flex;"><span>    exp: &lt;epoch time + 2 minutes&gt;
+</span></span><span style="display:flex;"><span>    ehts: &lt;authorization; content_type; uri; http-method; body&gt; =&gt; All request headers, URI, HTTP method and body fields used to create hash
+</span></span><span style="display:flex;"><span>    edts: &lt;Base64UrlSafeEncoding[SHA256(all ehts claim values as a concatenated string)]&gt;
+</span></span><span style="display:flex;"><span>    jti: &lt;unique identifier&gt;
+</span></span><span style="display:flex;"><span>    v: &#34;1&#34;
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>Signature: &lt;digitalSignature&gt;</span></span></code></pre></div><p>This token is then passed to T-Mobile API endpoints via the <code>X-Authentication</code> header, along with the access token in the <code>Authorization</code> header.</p>
 <p>This is an example PoP token:</p>
 
 
 
 
 
-<pre tabindex="0"><code>eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJpYXQiOjE3MTExMTkwNTEsImV4cCI6MTcxMTExOTE3MSwiZWh0cyI6IkNvbnRlbnQtVHlwZTt1cmk7aHR0cC1tZXRob2QiLCJlZHRzIjoidHBBZG1QTWwyUV8yZlJVUjRPRWZsa25aUXR5VFloX3JLcVYzeXFiRFpBMCIsImp0aSI6ImZiMjc3ZGVmLTFkMDEtNDdiMy1hM2Q4LTk1NGJmY2MxNGY1OSIsInYiOjF9.HNfcPqaKufuj64eKDVgx-TahcM15PoCBJIE9RDJVirUMb4xOE0GhfxcXTmDyRVry-mlWp2czhS_cHQawXwvzdJ3SaJBQngWdQR8sApnaWcZcpjCjvysy5jxHEo3CSdKJdUNjA5Rzd7AboQaYpVvidwRUvhFdoUsOoXC3qVWiL1krqlwzHe-dvdKyRzdOSjmwuTHEGXmUS0WTm73449yzFoajgUJi4fh_Yi7Oz0Ac8o1jMh63GmtObA-D0uzQDMi-VVbrCsVhxDORL82xmuOoI1HyQZtZkjl69u1Ykgi-q5HjFNqm3YJC70QMfxcXNm9GFiC7X8X3T4tLr981_pDl5Q</code></pre><p>When decoded, it contains the following data:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-fallback" data-lang="fallback"><span style="display:flex;"><span>eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJpYXQiOjE3MTExMTkwNTEsImV4cCI6MTcxMTExOTE3MSwiZWh0cyI6IkNvbnRlbnQtVHlwZTt1cmk7aHR0cC1tZXRob2QiLCJlZHRzIjoidHBBZG1QTWwyUV8yZlJVUjRPRWZsa25aUXR5VFloX3JLcVYzeXFiRFpBMCIsImp0aSI6ImZiMjc3ZGVmLTFkMDEtNDdiMy1hM2Q4LTk1NGJmY2MxNGY1OSIsInYiOjF9.HNfcPqaKufuj64eKDVgx-TahcM15PoCBJIE9RDJVirUMb4xOE0GhfxcXTmDyRVry-mlWp2czhS_cHQawXwvzdJ3SaJBQngWdQR8sApnaWcZcpjCjvysy5jxHEo3CSdKJdUNjA5Rzd7AboQaYpVvidwRUvhFdoUsOoXC3qVWiL1krqlwzHe-dvdKyRzdOSjmwuTHEGXmUS0WTm73449yzFoajgUJi4fh_Yi7Oz0Ac8o1jMh63GmtObA-D0uzQDMi-VVbrCsVhxDORL82xmuOoI1HyQZtZkjl69u1Ykgi-q5HjFNqm3YJC70QMfxcXNm9GFiC7X8X3T4tLr981_pDl5Q</span></span></code></pre></div><p>When decoded, it contains the following data:</p>
 
 
 
 
 
-<pre tabindex="0"><code>{
-    &#34;alg&#34;: &#34;RS256&#34;,
-    &#34;typ&#34;: &#34;JWT&#34;
-}
-{
-    &#34;iat&#34;: 1711119051,
-    &#34;exp&#34;: 1711119171,
-    &#34;ehts&#34;: &#34;Content-Type;uri;http-method&#34;,
-    &#34;edts&#34;: &#34;tpAdmPMl2Q_2fRUR4OEflknZQtyTYh_rKqV3yqbDZA0&#34;,
-    &#34;jti&#34;: &#34;fb277def-1d01-47b3-a3d8-954bfcc14f59&#34;,
-    &#34;v&#34;: 1
-}
-&lt;signature&gt;</code></pre><h2 id="generating-a-pop-token">Generating a PoP Token</h2>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-fallback" data-lang="fallback"><span style="display:flex;"><span>{
+</span></span><span style="display:flex;"><span>    &#34;alg&#34;: &#34;RS256&#34;,
+</span></span><span style="display:flex;"><span>    &#34;typ&#34;: &#34;JWT&#34;
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>{
+</span></span><span style="display:flex;"><span>    &#34;iat&#34;: 1711119051,
+</span></span><span style="display:flex;"><span>    &#34;exp&#34;: 1711119171,
+</span></span><span style="display:flex;"><span>    &#34;ehts&#34;: &#34;Content-Type;uri;http-method&#34;,
+</span></span><span style="display:flex;"><span>    &#34;edts&#34;: &#34;tpAdmPMl2Q_2fRUR4OEflknZQtyTYh_rKqV3yqbDZA0&#34;,
+</span></span><span style="display:flex;"><span>    &#34;jti&#34;: &#34;fb277def-1d01-47b3-a3d8-954bfcc14f59&#34;,
+</span></span><span style="display:flex;"><span>    &#34;v&#34;: 1
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>&lt;signature&gt;</span></span></code></pre></div><h2 id="generating-a-pop-token">Generating a PoP Token</h2>
 <p>The <code>edts</code> hash can be generated with the following data:</p>
 
 
 
 
 
-<pre tabindex="0"><code>POST /oauth2/v2/tokens
-Host core.saas.api.t-mobile.com
-Content-Type: application/json
-{&#34;cnf&#34;:&#34;-----BEGIN PUBLIC KEY-----...&#34;,&#34;client_id&#34;:&#34;SIDWeb&#34;}</code></pre><p>Resulting in the following payload:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-fallback" data-lang="fallback"><span style="display:flex;"><span>POST /oauth2/v2/tokens
+</span></span><span style="display:flex;"><span>Host core.saas.api.t-mobile.com
+</span></span><span style="display:flex;"><span>Content-Type: application/json
+</span></span><span style="display:flex;"><span>{&#34;cnf&#34;:&#34;-----BEGIN PUBLIC KEY-----...&#34;,&#34;client_id&#34;:&#34;SIDWeb&#34;}</span></span></code></pre></div><p>Resulting in the following payload:</p>
 
 
 
 
 
-<pre tabindex="0"><code>edtsString = &#34;application/json/oauth2/v2/tokensPOST&#34;
-edts = base64.b64encode(SHA256.new(bytes(edtsString, &#34;utf-8&#34;)).digest()).decode(&#39;utf-8&#39;).replace(&#34;=&#34;, &#34;&#34;).replace(&#34;+&#34;, &#34;-&#34;).replace(&#34;/&#34;, &#34;_&#34;)
-# tpAdmPMl2Q_2fRUR4OEflknZQtyTYh_rKqV3yqbDZA0</code></pre><p>The backend API server can then take the public key provided in the POST body and validate the headers specified in the <code>ehts</code> claim.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>edtsString <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;application/json/oauth2/v2/tokensPOST&#34;</span>
+</span></span><span style="display:flex;"><span>edts <span style="color:#f92672">=</span> base64<span style="color:#f92672">.</span>b64encode(SHA256<span style="color:#f92672">.</span>new(bytes(edtsString, <span style="color:#e6db74">&#34;utf-8&#34;</span>))<span style="color:#f92672">.</span>digest())<span style="color:#f92672">.</span>decode(<span style="color:#e6db74">&#39;utf-8&#39;</span>)<span style="color:#f92672">.</span>replace(<span style="color:#e6db74">&#34;=&#34;</span>, <span style="color:#e6db74">&#34;&#34;</span>)<span style="color:#f92672">.</span>replace(<span style="color:#e6db74">&#34;+&#34;</span>, <span style="color:#e6db74">&#34;-&#34;</span>)<span style="color:#f92672">.</span>replace(<span style="color:#e6db74">&#34;/&#34;</span>, <span style="color:#e6db74">&#34;_&#34;</span>)
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># tpAdmPMl2Q_2fRUR4OEflknZQtyTYh_rKqV3yqbDZA0</span></span></span></code></pre></div><p>The backend API server can then take the public key provided in the POST body and validate the headers specified in the <code>ehts</code> claim.</p>
 <p>Here is some sample Python code to generate the PoP token for a given request:</p>
 
 
 
 
 
-<pre tabindex="0"><code>import base64
-from datetime import datetime, timedelta, timezone
-import uuid
-from Crypto.Hash import SHA256
-import jwt
-
-
-def get_pop_token(priv_key, method, uri, headers=None, body=None):
-    now = datetime.now(tz=timezone.utc)
-    payload = {
-        &#34;iat&#34;: int(now.timestamp()),
-        &#34;exp&#34;: int((now + timedelta(seconds=120)).timestamp()),
-    }
-
-    data = {
-        **headers,
-        &#34;uri&#34;: uri,
-        &#34;http-method&#34;: method
-    }
-    if body:
-        data[&#39;body&#39;] = body
-
-    # Creating ehts string...
-    ehts = []
-    edtsString = &#34;&#34;
-    for k, v in data.items():
-        ehts.append(k)
-        edtsString += str(v)
-    payload[&#39;ehts&#39;] = &#39;;&#39;.join(ehts)
-
-    # Creating edts hash...
-    hash = SHA256.new(bytes(edtsString, &#34;utf-8&#34;))
-    edts = base64.b64encode(hash.digest()).decode(&#39;utf-8&#39;).replace(&#34;=&#34;, &#34;&#34;).replace(&#34;+&#34;, &#34;-&#34;).replace(&#34;/&#34;, &#34;_&#34;)
-    payload[&#39;edts&#39;] = edts
-
-    payload.update({
-        &#34;jti&#34;: str(uuid.uuid4()),
-        &#34;v&#34;: 1
-    })
-
-    return jwt.encode(payload, priv_key, algorithm=&#34;RS256&#34;)</code></pre><h2 id="using-pop-tokens">Using PoP tokens</h2>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#f92672">import</span> base64
+</span></span><span style="display:flex;"><span><span style="color:#f92672">from</span> datetime <span style="color:#f92672">import</span> datetime, timedelta, timezone
+</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> uuid
+</span></span><span style="display:flex;"><span><span style="color:#f92672">from</span> Crypto.Hash <span style="color:#f92672">import</span> SHA256
+</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> jwt
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">get_pop_token</span>(priv_key, method, uri, headers<span style="color:#f92672">=</span><span style="color:#66d9ef">None</span>, body<span style="color:#f92672">=</span><span style="color:#66d9ef">None</span>):
+</span></span><span style="display:flex;"><span>    now <span style="color:#f92672">=</span> datetime<span style="color:#f92672">.</span>now(tz<span style="color:#f92672">=</span>timezone<span style="color:#f92672">.</span>utc)
+</span></span><span style="display:flex;"><span>    payload <span style="color:#f92672">=</span> {
+</span></span><span style="display:flex;"><span>        <span style="color:#e6db74">&#34;iat&#34;</span>: int(now<span style="color:#f92672">.</span>timestamp()),
+</span></span><span style="display:flex;"><span>        <span style="color:#e6db74">&#34;exp&#34;</span>: int((now <span style="color:#f92672">+</span> timedelta(seconds<span style="color:#f92672">=</span><span style="color:#ae81ff">120</span>))<span style="color:#f92672">.</span>timestamp()),
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    data <span style="color:#f92672">=</span> {
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">**</span>headers,
+</span></span><span style="display:flex;"><span>        <span style="color:#e6db74">&#34;uri&#34;</span>: uri,
+</span></span><span style="display:flex;"><span>        <span style="color:#e6db74">&#34;http-method&#34;</span>: method
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">if</span> body:
+</span></span><span style="display:flex;"><span>        data[<span style="color:#e6db74">&#39;body&#39;</span>] <span style="color:#f92672">=</span> body
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># Creating ehts string...</span>
+</span></span><span style="display:flex;"><span>    ehts <span style="color:#f92672">=</span> []
+</span></span><span style="display:flex;"><span>    edtsString <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;&#34;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">for</span> k, v <span style="color:#f92672">in</span> data<span style="color:#f92672">.</span>items():
+</span></span><span style="display:flex;"><span>        ehts<span style="color:#f92672">.</span>append(k)
+</span></span><span style="display:flex;"><span>        edtsString <span style="color:#f92672">+=</span> str(v)
+</span></span><span style="display:flex;"><span>    payload[<span style="color:#e6db74">&#39;ehts&#39;</span>] <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;;&#39;</span><span style="color:#f92672">.</span>join(ehts)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># Creating edts hash...</span>
+</span></span><span style="display:flex;"><span>    hash <span style="color:#f92672">=</span> SHA256<span style="color:#f92672">.</span>new(bytes(edtsString, <span style="color:#e6db74">&#34;utf-8&#34;</span>))
+</span></span><span style="display:flex;"><span>    edts <span style="color:#f92672">=</span> base64<span style="color:#f92672">.</span>b64encode(hash<span style="color:#f92672">.</span>digest())<span style="color:#f92672">.</span>decode(<span style="color:#e6db74">&#39;utf-8&#39;</span>)<span style="color:#f92672">.</span>replace(<span style="color:#e6db74">&#34;=&#34;</span>, <span style="color:#e6db74">&#34;&#34;</span>)<span style="color:#f92672">.</span>replace(<span style="color:#e6db74">&#34;+&#34;</span>, <span style="color:#e6db74">&#34;-&#34;</span>)<span style="color:#f92672">.</span>replace(<span style="color:#e6db74">&#34;/&#34;</span>, <span style="color:#e6db74">&#34;_&#34;</span>)
+</span></span><span style="display:flex;"><span>    payload[<span style="color:#e6db74">&#39;edts&#39;</span>] <span style="color:#f92672">=</span> edts
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    payload<span style="color:#f92672">.</span>update({
+</span></span><span style="display:flex;"><span>        <span style="color:#e6db74">&#34;jti&#34;</span>: str(uuid<span style="color:#f92672">.</span>uuid4()),
+</span></span><span style="display:flex;"><span>        <span style="color:#e6db74">&#34;v&#34;</span>: <span style="color:#ae81ff">1</span>
+</span></span><span style="display:flex;"><span>    })
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> jwt<span style="color:#f92672">.</span>encode(payload, priv_key, algorithm<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;RS256&#34;</span>)</span></span></code></pre></div><h2 id="using-pop-tokens">Using PoP tokens</h2>
 <p>Once you have the ability to generate PoP tokens, you can request an access token:</p>
 
 
 
 
 
-<pre tabindex="0"><code>def _access_token(self) -&gt; str:
-    endpoint = &#34;/oauth2/v2/tokens&#34;
-    # These are the credentials associated with your T-Mobile app or user
-    auth = HTTPBasicAuth(self.client_id, self.client_secret)
-    headers = {&#34;Content-Type&#34;: &#34;application/json&#34;}
-    headers[&#39;X-Authorization&#39;] = get_pop_token(self.priv_key, &#34;POST&#34;, endpoint, headers=headers)
-    r = requests.post(f&#34;{self.base_url}{endpoint}&#34;, auth=auth, headers=headers)
-    return r.json()[&#39;access_token&#39;]</code></pre><p>And then finally you can put it all together to make an authenticated request to an API like this one for DevEdge:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">_access_token</span>(self) <span style="color:#f92672">-&gt;</span> str:
+</span></span><span style="display:flex;"><span>    endpoint <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;/oauth2/v2/tokens&#34;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># These are the credentials associated with your T-Mobile app or user</span>
+</span></span><span style="display:flex;"><span>    auth <span style="color:#f92672">=</span> HTTPBasicAuth(self<span style="color:#f92672">.</span>client_id, self<span style="color:#f92672">.</span>client_secret)
+</span></span><span style="display:flex;"><span>    headers <span style="color:#f92672">=</span> {<span style="color:#e6db74">&#34;Content-Type&#34;</span>: <span style="color:#e6db74">&#34;application/json&#34;</span>}
+</span></span><span style="display:flex;"><span>    headers[<span style="color:#e6db74">&#39;X-Authorization&#39;</span>] <span style="color:#f92672">=</span> get_pop_token(self<span style="color:#f92672">.</span>priv_key, <span style="color:#e6db74">&#34;POST&#34;</span>, endpoint, headers<span style="color:#f92672">=</span>headers)
+</span></span><span style="display:flex;"><span>    r <span style="color:#f92672">=</span> requests<span style="color:#f92672">.</span>post(<span style="color:#e6db74">f</span><span style="color:#e6db74">&#34;</span><span style="color:#e6db74">{</span>self<span style="color:#f92672">.</span>base_url<span style="color:#e6db74">}{</span>endpoint<span style="color:#e6db74">}</span><span style="color:#e6db74">&#34;</span>, auth<span style="color:#f92672">=</span>auth, headers<span style="color:#f92672">=</span>headers)
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> r<span style="color:#f92672">.</span>json()[<span style="color:#e6db74">&#39;access_token&#39;</span>]</span></span></code></pre></div><p>And then finally you can put it all together to make an authenticated request to an API like this one for DevEdge:</p>
 
 
 
 
 
-<pre tabindex="0"><code>def devices(self, iccid: str) -&gt; Dict[Any, Any]:
-    endpoint = f&#34;/iot-connectivity/v1/devices/{iccid}&#34;
-    headers = {&#34;Content-Type&#34;: &#34;application/json&#34;}
-    headers[&#39;X-Authorization&#39;] = get_pop_token(self.base.priv_key, &#34;GET&#34;, endpoint, headers=headers)
-    headers[&#39;Authorization&#39;] = f&#39;Bearer {self.base._access_token()}&#39;
-    r = requests.get(f&#34;{self.base.base_url}{endpoint}&#34;, headers=headers)
-    return r.json()</code></pre>]]></content:encoded>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">devices</span>(self, iccid: str) <span style="color:#f92672">-&gt;</span> Dict[Any, Any]:
+</span></span><span style="display:flex;"><span>    endpoint <span style="color:#f92672">=</span> <span style="color:#e6db74">f</span><span style="color:#e6db74">&#34;/iot-connectivity/v1/devices/</span><span style="color:#e6db74">{</span>iccid<span style="color:#e6db74">}</span><span style="color:#e6db74">&#34;</span>
+</span></span><span style="display:flex;"><span>    headers <span style="color:#f92672">=</span> {<span style="color:#e6db74">&#34;Content-Type&#34;</span>: <span style="color:#e6db74">&#34;application/json&#34;</span>}
+</span></span><span style="display:flex;"><span>    headers[<span style="color:#e6db74">&#39;X-Authorization&#39;</span>] <span style="color:#f92672">=</span> get_pop_token(self<span style="color:#f92672">.</span>base<span style="color:#f92672">.</span>priv_key, <span style="color:#e6db74">&#34;GET&#34;</span>, endpoint, headers<span style="color:#f92672">=</span>headers)
+</span></span><span style="display:flex;"><span>    headers[<span style="color:#e6db74">&#39;Authorization&#39;</span>] <span style="color:#f92672">=</span> <span style="color:#e6db74">f</span><span style="color:#e6db74">&#39;Bearer </span><span style="color:#e6db74">{</span>self<span style="color:#f92672">.</span>base<span style="color:#f92672">.</span>_access_token()<span style="color:#e6db74">}</span><span style="color:#e6db74">&#39;</span>
+</span></span><span style="display:flex;"><span>    r <span style="color:#f92672">=</span> requests<span style="color:#f92672">.</span>get(<span style="color:#e6db74">f</span><span style="color:#e6db74">&#34;</span><span style="color:#e6db74">{</span>self<span style="color:#f92672">.</span>base<span style="color:#f92672">.</span>base_url<span style="color:#e6db74">}{</span>endpoint<span style="color:#e6db74">}</span><span style="color:#e6db74">&#34;</span>, headers<span style="color:#f92672">=</span>headers)
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> r<span style="color:#f92672">.</span>json()</span></span></code></pre></div>]]></content:encoded>
     </item>
   </channel>
 </rss>

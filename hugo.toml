@@ -8,3 +8,8 @@ defaultContentLanguage = "en"
 [params]
   description = "Andrelia Hacks Stuff"
   title = "Andrelia Hacks Stuff"
+
+[markup]
+  [markup.highlight]
+    codeFences = true
+    guessSyntax = true

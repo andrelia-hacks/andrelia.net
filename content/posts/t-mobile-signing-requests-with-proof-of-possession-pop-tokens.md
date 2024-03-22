@@ -67,7 +67,7 @@ Content-Type: application/json
 
 Resulting in the following payload:
 
-```
+```python
 edtsString = "application/json/oauth2/v2/tokensPOST"
 edts = base64.b64encode(SHA256.new(bytes(edtsString, "utf-8")).digest()).decode('utf-8').replace("=", "").replace("+", "-").replace("/", "_")
 # tpAdmPMl2Q_2fRUR4OEflknZQtyTYh_rKqV3yqbDZA0
@@ -77,7 +77,7 @@ The backend API server can then take the public key provided in the POST body an
 
 Here is some sample Python code to generate the PoP token for a given request:
 
-```
+```python
 import base64
 from datetime import datetime, timedelta, timezone
 import uuid
@@ -125,7 +125,7 @@ def get_pop_token(priv_key, method, uri, headers=None, body=None):
 
 Once you have the ability to generate PoP tokens, you can request an access token:
 
-```
+```python
 def _access_token(self) -> str:
     endpoint = "/oauth2/v2/tokens"
     # These are the credentials associated with your T-Mobile app or user
@@ -138,7 +138,7 @@ def _access_token(self) -> str:
 
 And then finally you can put it all together to make an authenticated request to an API like this one for DevEdge:
 
-```
+```python
 def devices(self, iccid: str) -> Dict[Any, Any]:
     endpoint = f"/iot-connectivity/v1/devices/{iccid}"
     headers = {"Content-Type": "application/json"}
