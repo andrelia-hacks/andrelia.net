@@ -1,5 +1,5 @@
 +++
-title = 'T-Mobile: Signing Requests With Proof of Posession (PoP) Tokens'
+title = 'T-Mobile: Signing Requests With Proof of Possession (PoP) Tokens'
 date = 2024-03-22T14:11:45-04:00
 draft = false
 +++

@@ -2,17 +2,17 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
   <channel>
     <title>Posts on Andrelia Hacks Stuff</title>
-    <link>http://localhost:1313/posts/</link>
+    <link>/posts/</link>
     <description>Recent content in Posts on Andrelia Hacks Stuff</description>
     <generator>Hugo -- gohugo.io</generator>
-    <language>en-us</language>
+    <language>en</language>
     <lastBuildDate>Fri, 22 Mar 2024 14:11:45 -0400</lastBuildDate>
-    <atom:link href="http://localhost:1313/posts/index.xml" rel="self" type="application/rss+xml" />
+    <atom:link href="/posts/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>T-Mobile: Signing Requests With Proof of Posession (PoP) Tokens</title>
-      <link>http://localhost:1313/posts/t-mobile-signing-requests-with-proof-of-posession-pop-tokens/</link>
+      <link>/posts/t-mobile-signing-requests-with-proof-of-posession-pop-tokens/</link>
       <pubDate>Fri, 22 Mar 2024 14:11:45 -0400</pubDate>
-      <guid>http://localhost:1313/posts/t-mobile-signing-requests-with-proof-of-posession-pop-tokens/</guid>
+      <guid>/posts/t-mobile-signing-requests-with-proof-of-posession-pop-tokens/</guid>
       <description>Introduction In a typical authenticated API, leaked credentials allow an attacker to make API requests as the associated user for as long as the credentials are valid. With many REST APIs, these credentials come in the form of a bearer token, typically using JSON Web Tokens (JWTs).&#xA;The OAuth 2.0 bearer token specification, as defined in RFC6750, allows any party in possession of a bearer token to get access to the associated resources without demonstrating possession of a cryptographic key.</description>
       <content:encoded><![CDATA[<h2 id="introduction">Introduction</h2>
 <p>In a typical authenticated API, leaked credentials allow an attacker to make API requests as the associated user for as long as the credentials are valid. With many REST APIs, these credentials come in the form of a bearer token, typically using JSON Web Tokens (JWTs).</p>
