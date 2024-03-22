@@ -1,0 +1,4 @@
+baseURL = 'https://andrelia.net/'
+languageCode = 'en-us'
+title = 'Andrelia Hacks Stuff'
+theme = "hugo-bearcub"

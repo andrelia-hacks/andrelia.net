@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="en-us">
+
+<head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script>
+  <meta http-equiv="X-Clacks-Overhead" content="GNU Terry Pratchett" />
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>T-Mobile: Signing Requests With Proof of Posession (PoP) Tokens | Andrelia Hacks Stuff</title>
+<meta name="title" content="T-Mobile: Signing Requests With Proof of Posession (PoP) Tokens" />
+<meta name="description" content="Introduction In a typical authenticated API, leaked credentials allow an attacker to make API requests as the associated user for as long as the credentials are valid. With many REST APIs, these credentials come in the form of a bearer token, typically using JSON Web Tokens (JWTs).
+The OAuth 2.0 bearer token specification, as defined in RFC6750, allows any party in possession of a bearer token to get access to the associated resources without demonstrating possession of a cryptographic key." />
+<meta name="keywords" content="" />
+
+
+
+
+
+
+  
+  <meta property="og:title" content="T-Mobile: Signing Requests With Proof of Posession (PoP) Tokens" />
+<meta property="og:description" content="Introduction In a typical authenticated API, leaked credentials allow an attacker to make API requests as the associated user for as long as the credentials are valid. With many REST APIs, these credentials come in the form of a bearer token, typically using JSON Web Tokens (JWTs).
+The OAuth 2.0 bearer token specification, as defined in RFC6750, allows any party in possession of a bearer token to get access to the associated resources without demonstrating possession of a cryptographic key." />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="http://localhost:1313/posts/t-mobile-signing-requests-with-proof-of-posession-pop-tokens/" /><meta property="article:section" content="posts" />
+<meta property="article:published_time" content="2024-03-22T14:11:45-04:00" />
+<meta property="article:modified_time" content="2024-03-22T14:11:45-04:00" />
+
+
+
+  
+  <meta name="twitter:card" content="summary"/><meta name="twitter:title" content="T-Mobile: Signing Requests With Proof of Posession (PoP) Tokens"/>
+<meta name="twitter:description" content="Introduction In a typical authenticated API, leaked credentials allow an attacker to make API requests as the associated user for as long as the credentials are valid. With many REST APIs, these credentials come in the form of a bearer token, typically using JSON Web Tokens (JWTs).
+The OAuth 2.0 bearer token specification, as defined in RFC6750, allows any party in possession of a bearer token to get access to the associated resources without demonstrating possession of a cryptographic key."/>
+
+
+  
+  <meta itemprop="name" content="T-Mobile: Signing Requests With Proof of Posession (PoP) Tokens">
+<meta itemprop="description" content="Introduction In a typical authenticated API, leaked credentials allow an attacker to make API requests as the associated user for as long as the credentials are valid. With many REST APIs, these credentials come in the form of a bearer token, typically using JSON Web Tokens (JWTs).
+The OAuth 2.0 bearer token specification, as defined in RFC6750, allows any party in possession of a bearer token to get access to the associated resources without demonstrating possession of a cryptographic key."><meta itemprop="datePublished" content="2024-03-22T14:11:45-04:00" />
+<meta itemprop="dateModified" content="2024-03-22T14:11:45-04:00" />
+<meta itemprop="wordCount" content="607">
+<meta itemprop="keywords" content="" />
+
+<meta name="referrer" content="no-referrer-when-downgrade" />
+
+  
+  <link href="/original.min.css" rel="stylesheet">
+
+  
+    
+    <link href="/syntax.min.css" rel="stylesheet">
+  
+
+  
+
+  
+</head>
+
+<body>
+  <header><a class="skip-link" href="#main-content">Skip to main content</a>
+
+<a href="/" class="title"><h1>Andrelia Hacks Stuff</h1></a>
+<nav>
+<a href='http://localhost:1313/index.xml'>RSS</a>
+
+
+
+
+
+
+
+</nav>
+</header>
+  <main id="main-content">
+
+<h1>T-Mobile: Signing Requests With Proof of Posession (PoP) Tokens</h1>
+<p class="byline">
+  <time datetime='2024-03-22' pubdate>
+    2024-03-22
+  </time>
+  
+</p>
+
+<content>
+  <h2 id="introduction">Introduction</h2>
+<p>In a typical authenticated API, leaked credentials allow an attacker to make API requests as the associated user for as long as the credentials are valid. With many REST APIs, these credentials come in the form of a bearer token, typically using JSON Web Tokens (JWTs).</p>
+<p>The OAuth 2.0 bearer token specification, as defined in RFC6750, allows any party in possession of a bearer token to get access to the associated resources without demonstrating possession of a cryptographic key. Given the risk of exposure of these tokens, some organizations require additional security measures, such as request signing with a known keypair.</p>
+<p>T-Mobile uses a method called proof of possession (PoP) which provides a mechanism to bind key material to OAuth tokens. The client can use a keypair to add a signature to the outgoing HTTP requests to the resource server. The resource server in turn can validate the signature and ensure that the key material provided by the sender is the same entity that requested the token in the first place (as opposed to someone who stole the token in transit or at rest). Further, each request is signed with its own PoP token, minimizing the risk of leaked access tokens being used across endpoints.</p>
+<h2 id="pop-token-structure">PoP Token Structure</h2>
+<p>The structure of the PoP token used by T-Mobile is:</p>
+
+
+
+
+
+<pre tabindex="0"><code>Header: {alg, type}
+Body: {
+    iat: &lt;epoch time&gt;
+    exp: &lt;epoch time + 2 minutes&gt;
+    ehts: &lt;authorization; content_type; uri; http-method; body&gt; =&gt; All request headers, URI, HTTP method and body fields used to create hash
+    edts: &lt;Base64UrlSafeEncoding[SHA256(all ehts claim values as a concatenated string)]&gt;
+    jti: &lt;unique identifier&gt;
+    v: &#34;1&#34;
+}
+Signature: &lt;digitalSignature&gt;</code></pre><p>This token is then passed to T-Mobile API endpoints via the <code>X-Authentication</code> header, along with the access token in the <code>Authorization</code> header.</p>
+<p>This is an example PoP token:</p>
+
+
+
+
+
+<pre tabindex="0"><code>eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJpYXQiOjE3MTExMTkwNTEsImV4cCI6MTcxMTExOTE3MSwiZWh0cyI6IkNvbnRlbnQtVHlwZTt1cmk7aHR0cC1tZXRob2QiLCJlZHRzIjoidHBBZG1QTWwyUV8yZlJVUjRPRWZsa25aUXR5VFloX3JLcVYzeXFiRFpBMCIsImp0aSI6ImZiMjc3ZGVmLTFkMDEtNDdiMy1hM2Q4LTk1NGJmY2MxNGY1OSIsInYiOjF9.HNfcPqaKufuj64eKDVgx-TahcM15PoCBJIE9RDJVirUMb4xOE0GhfxcXTmDyRVry-mlWp2czhS_cHQawXwvzdJ3SaJBQngWdQR8sApnaWcZcpjCjvysy5jxHEo3CSdKJdUNjA5Rzd7AboQaYpVvidwRUvhFdoUsOoXC3qVWiL1krqlwzHe-dvdKyRzdOSjmwuTHEGXmUS0WTm73449yzFoajgUJi4fh_Yi7Oz0Ac8o1jMh63GmtObA-D0uzQDMi-VVbrCsVhxDORL82xmuOoI1HyQZtZkjl69u1Ykgi-q5HjFNqm3YJC70QMfxcXNm9GFiC7X8X3T4tLr981_pDl5Q</code></pre><p>When decoded, it contains the following data:</p>
+
+
+
+
+
+<pre tabindex="0"><code>{
+    &#34;alg&#34;: &#34;RS256&#34;,
+    &#34;typ&#34;: &#34;JWT&#34;
+}
+{
+    &#34;iat&#34;: 1711119051,
+    &#34;exp&#34;: 1711119171,
+    &#34;ehts&#34;: &#34;Content-Type;uri;http-method&#34;,
+    &#34;edts&#34;: &#34;tpAdmPMl2Q_2fRUR4OEflknZQtyTYh_rKqV3yqbDZA0&#34;,
+    &#34;jti&#34;: &#34;fb277def-1d01-47b3-a3d8-954bfcc14f59&#34;,
+    &#34;v&#34;: 1
+}
+&lt;signature&gt;</code></pre><h2 id="generating-a-pop-token">Generating a PoP Token</h2>
+<p>The <code>edts</code> hash can be generated with the following data:</p>
+
+
+
+
+
+<pre tabindex="0"><code>POST /oauth2/v2/tokens
+Host core.saas.api.t-mobile.com
+Content-Type: application/json
+{&#34;cnf&#34;:&#34;-----BEGIN PUBLIC KEY-----...&#34;,&#34;client_id&#34;:&#34;SIDWeb&#34;}</code></pre><p>Resulting in the following payload:</p>
+
+
+
+
+
+<pre tabindex="0"><code>edtsString = &#34;application/json/oauth2/v2/tokensPOST&#34;
+edts = base64.b64encode(SHA256.new(bytes(edtsString, &#34;utf-8&#34;)).digest()).decode(&#39;utf-8&#39;).replace(&#34;=&#34;, &#34;&#34;).replace(&#34;+&#34;, &#34;-&#34;).replace(&#34;/&#34;, &#34;_&#34;)
+# tpAdmPMl2Q_2fRUR4OEflknZQtyTYh_rKqV3yqbDZA0</code></pre><p>The backend API server can then take the public key provided in the POST body and validate the headers specified in the <code>ehts</code> claim.</p>
+<p>Here is some sample Python code to generate the PoP token for a given request:</p>
+
+
+
+
+
+<pre tabindex="0"><code>import base64
+from datetime import datetime, timedelta, timezone
+import uuid
+from Crypto.Hash import SHA256
+import jwt
+
+
+def get_pop_token(priv_key, method, uri, headers=None, body=None):
+    now = datetime.now(tz=timezone.utc)
+    payload = {
+        &#34;iat&#34;: int(now.timestamp()),
+        &#34;exp&#34;: int((now + timedelta(seconds=120)).timestamp()),
+    }
+
+    data = {
+        **headers,
+        &#34;uri&#34;: uri,
+        &#34;http-method&#34;: method
+    }
+    if body:
+        data[&#39;body&#39;] = body
+
+    # Creating ehts string...
+    ehts = []
+    edtsString = &#34;&#34;
+    for k, v in data.items():
+        ehts.append(k)
+        edtsString += str(v)
+    payload[&#39;ehts&#39;] = &#39;;&#39;.join(ehts)
+
+    # Creating edts hash...
+    hash = SHA256.new(bytes(edtsString, &#34;utf-8&#34;))
+    edts = base64.b64encode(hash.digest()).decode(&#39;utf-8&#39;).replace(&#34;=&#34;, &#34;&#34;).replace(&#34;+&#34;, &#34;-&#34;).replace(&#34;/&#34;, &#34;_&#34;)
+    payload[&#39;edts&#39;] = edts
+
+    payload.update({
+        &#34;jti&#34;: str(uuid.uuid4()),
+        &#34;v&#34;: 1
+    })
+
+    return jwt.encode(payload, priv_key, algorithm=&#34;RS256&#34;)</code></pre><h2 id="using-pop-tokens">Using PoP tokens</h2>
+<p>Once you have the ability to generate PoP tokens, you can request an access token:</p>
+
+
+
+
+
+<pre tabindex="0"><code>def _access_token(self) -&gt; str:
+    endpoint = &#34;/oauth2/v2/tokens&#34;
+    # These are the credentials associated with your T-Mobile app or user
+    auth = HTTPBasicAuth(self.client_id, self.client_secret)
+    headers = {&#34;Content-Type&#34;: &#34;application/json&#34;}
+    headers[&#39;X-Authorization&#39;] = get_pop_token(self.priv_key, &#34;POST&#34;, endpoint, headers=headers)
+    r = requests.post(f&#34;{self.base_url}{endpoint}&#34;, auth=auth, headers=headers)
+    return r.json()[&#39;access_token&#39;]</code></pre><p>And then finally you can put it all together to make an authenticated request to an API like this one for DevEdge:</p>
+
+
+
+
+
+<pre tabindex="0"><code>def devices(self, iccid: str) -&gt; Dict[Any, Any]:
+    endpoint = f&#34;/iot-connectivity/v1/devices/{iccid}&#34;
+    headers = {&#34;Content-Type&#34;: &#34;application/json&#34;}
+    headers[&#39;X-Authorization&#39;] = get_pop_token(self.base.priv_key, &#34;GET&#34;, endpoint, headers=headers)
+    headers[&#39;Authorization&#39;] = f&#39;Bearer {self.base._access_token()}&#39;
+    r = requests.get(f&#34;{self.base.base_url}{endpoint}&#34;, headers=headers)
+    return r.json()</code></pre>
+</content>
+<p>
+  
+</p>
+
+
+  </main>
+  <footer><small>
+   | 
+</small></footer>
+
+    
+</body>
+
+</html>

@@ -1,0 +1,26 @@
+{{ define "main" }}
+<!-- This .Content will insert the content from your root _index.md -->
+{{ .Content }}
+
+<h2>Posts</h2>
+<ul>
+<!-- Look through every RegularPage - see here https://gohugo.io/variables/site/#site-variables-list -->
+{{ range .Site.RegularPages }}
+    <!-- Filter out any "addons" pages - this will remove /admin, /author, /sections -->
+    {{ if ne .Params.type "addons" }}
+        <!-- This is the HTML for each post -->
+        <li>
+            <span>
+                <i>
+                <time datetime='{{ .Date.Format "2006-01-02" }}' pubdate>
+                    {{ .Date.Format (default "2006-01-02" .Site.Params.dateFormat) }}
+                </time>
+                </i>
+            </span>
+            <a href="{{ .Permalink }}">{{ .Title }}</a>
+        </li>
+    {{ end }}
+{{ end }}
+</ul>
+
+{{ end }}
