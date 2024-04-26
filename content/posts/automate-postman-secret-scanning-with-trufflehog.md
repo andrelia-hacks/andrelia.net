@@ -7,7 +7,7 @@ draft = false
 
 ## Introduction
 
-Unintentional secret exposure on the internet is a problem as old as the internet itself. While `hunter2` may not have been the first password to be [inadvertently shared for everyone to see](https://archive.is/0y1yT), it has certainly not been the last. Since then, a significant number of new websites and tools have been released that make it even easier to accidentally disclose credentials, including passwords, private keys, API keys, and more. Some websites, such as Pastebin and its various clones, have been used to maliciously leak dumps of this information. Others, like GitHub are taking active steps to detect and alert on these credentials to prevent their misuse. Lately, I have been working with a team researching scanning for secrets in Postman.
+Unintentional secret exposure on the internet is a problem as old as the internet itself. While `hunter2` may not have been the first password to be [inadvertently shared for everyone to see](https://archive.is/0y1yT), it has certainly not been the last. Since then, a significant number of new websites and tools have been released that make it even easier to accidentally disclose credentials, including passwords, private keys, API keys, and more. Some websites, such as Pastebin and its various clones, have been maliciously used to publish dumps of this information. Others, like GitHub are taking active steps to detect and alert on these credentials to prevent their misuse. Lately, I have been working with a team that has been researching scanning for secrets in Postman.
 
 ## Common Sources of Secrets in Postman
 
@@ -29,11 +29,11 @@ Postman offers a number of ways to manage data used in making API calls. Some of
 
 ## Starting the Automation Process
 
-However, there is an easier way to get this information in a programatic way: using the Postman API. If you know the request ID of your target request, you can get the JSON data directly without an API key.
+However, there is an easier way to programatically retrieve this information: using the Postman API. If you know the GUID of your target request, you can get the JSON data directly without an API key.
 
 {{< figure src="/images/postman/api.png" alt="A screenshot of the Postman API output of a request" caption="Postman API" >}}
 
-This means that we can start with a file including a list of unique URLs found on the Postman network and filter out the ones that have request IDs:
+This means that we can start with a file including a list of unique URLs found on the Postman network and filter to only the ones that contain request IDs:
 
 ```
 cat unique_urls.json |jq -r .[] > urls
@@ -72,7 +72,11 @@ This still has room for improvement in terms of reducing noise further; however,
 
 ## Coming Soon: Even More Automation
 
-Recently, Truffle Security released a post on this subject ([Postman Carries Lots of Secrets](https://trufflesecurity.com/blog/postman-carries-lots-of-secrets)) that details an additional tool we can use: using `trufflehog` to directly search target workspaces. At the time of writing, I have not been able to get this command to work, but will definitely keep an eye on it. This support would allow searching for workspaces specifically and scanning for secrets that way.
+Recently, Truffle Security released a post on this subject ([Postman Carries Lots of Secrets](https://trufflesecurity.com/blog/postman-carries-lots-of-secrets)) that details an additional tool we can use: using `trufflehog` to directly search target workspaces.
+
+{{< figure src="/images/postman/trufflehog-workspace.png" alt="A screenshot of the output of the trufflehog postman scan command" caption="trufflehog --only-verified postman --token \"$POSTMAN_TOKEN\" --workspace=abcdef-1234-5678-9012-abcdef" >}}
+
+With this update to `trufflehog`, we can also search entire workspaces in a more efficient way.
 
 ### Resources
 

@@ -14,9 +14,9 @@
       <link>/posts/automate-postman-secret-scanning-with-trufflehog/</link>
       <pubDate>Fri, 26 Apr 2024 09:55:12 -0400</pubDate>
       <guid>/posts/automate-postman-secret-scanning-with-trufflehog/</guid>
-      <description>Introduction Unintentional secret exposure on the internet is a problem as old as the internet itself. While hunter2 may not have been the first password to be inadvertently shared for everyone to see, it has certainly not been the last. Since then, a significant number of new websites and tools have been released that make it even easier to accidentally disclose credentials, including passwords, private keys, API keys, and more. Some websites, such as Pastebin and its various clones, have been used to maliciously leak dumps of this information.</description>
+      <description>Introduction Unintentional secret exposure on the internet is a problem as old as the internet itself. While hunter2 may not have been the first password to be inadvertently shared for everyone to see, it has certainly not been the last. Since then, a significant number of new websites and tools have been released that make it even easier to accidentally disclose credentials, including passwords, private keys, API keys, and more. Some websites, such as Pastebin and its various clones, have been maliciously used to publish dumps of this information.</description>
       <content:encoded><![CDATA[<h2 id="introduction">Introduction</h2>
-<p>Unintentional secret exposure on the internet is a problem as old as the internet itself. While <code>hunter2</code> may not have been the first password to be <a href="https://archive.is/0y1yT">inadvertently shared for everyone to see</a>, it has certainly not been the last. Since then, a significant number of new websites and tools have been released that make it even easier to accidentally disclose credentials, including passwords, private keys, API keys, and more. Some websites, such as Pastebin and its various clones, have been used to maliciously leak dumps of this information. Others, like GitHub are taking active steps to detect and alert on these credentials to prevent their misuse. Lately, I have been working with a team researching scanning for secrets in Postman.</p>
+<p>Unintentional secret exposure on the internet is a problem as old as the internet itself. While <code>hunter2</code> may not have been the first password to be <a href="https://archive.is/0y1yT">inadvertently shared for everyone to see</a>, it has certainly not been the last. Since then, a significant number of new websites and tools have been released that make it even easier to accidentally disclose credentials, including passwords, private keys, API keys, and more. Some websites, such as Pastebin and its various clones, have been maliciously used to publish dumps of this information. Others, like GitHub are taking active steps to detect and alert on these credentials to prevent their misuse. Lately, I have been working with a team that has been researching scanning for secrets in Postman.</p>
 <h2 id="common-sources-of-secrets-in-postman">Common Sources of Secrets in Postman</h2>
 <p>Postman offers a number of ways to manage data used in making API calls. Some of this is protected, but much of it is not. The most common sources of credentials are the request headers and environment variables. However, credentials can easily be found in a number of other places as well.</p>
 <!-- raw HTML omitted -->
@@ -52,14 +52,14 @@
 </figure>
 
 <h2 id="starting-the-automation-process">Starting the Automation Process</h2>
-<p>However, there is an easier way to get this information in a programatic way: using the Postman API. If you know the request ID of your target request, you can get the JSON data directly without an API key.</p>
+<p>However, there is an easier way to programatically retrieve this information: using the Postman API. If you know the GUID of your target request, you can get the JSON data directly without an API key.</p>
 <figure><img src="/images/postman/api.png"
          alt="A screenshot of the Postman API output of a request"/><figcaption>
             <p>Postman API</p>
         </figcaption>
 </figure>
 
-<p>This means that we can start with a file including a list of unique URLs found on the Postman network and filter out the ones that have request IDs:</p>
+<p>This means that we can start with a file including a list of unique URLs found on the Postman network and filter to only the ones that contain request IDs:</p>
 
 
 
@@ -107,7 +107,14 @@
 
 <p>This still has room for improvement in terms of reducing noise further; however, the tooling has already resulted in a number of reported findings.</p>
 <h2 id="coming-soon-even-more-automation">Coming Soon: Even More Automation</h2>
-<p>Recently, Truffle Security released a post on this subject (<a href="https://trufflesecurity.com/blog/postman-carries-lots-of-secrets">Postman Carries Lots of Secrets</a>) that details an additional tool we can use: using <code>trufflehog</code> to directly search target workspaces. At the time of writing, I have not been able to get this command to work, but will definitely keep an eye on it. This support would allow searching for workspaces specifically and scanning for secrets that way.</p>
+<p>Recently, Truffle Security released a post on this subject (<a href="https://trufflesecurity.com/blog/postman-carries-lots-of-secrets">Postman Carries Lots of Secrets</a>) that details an additional tool we can use: using <code>trufflehog</code> to directly search target workspaces.</p>
+<figure><img src="/images/postman/trufflehog-workspace.png"
+         alt="A screenshot of the output of the trufflehog postman scan command"/><figcaption>
+            <p>trufflehog &ndash;only-verified postman &ndash;token &ldquo;$POSTMAN_TOKEN&rdquo; &ndash;workspace=abcdef-1234-5678-9012-abcdef</p>
+        </figcaption>
+</figure>
+
+<p>With this update to <code>trufflehog</code>, we can also search entire workspaces in a more efficient way.</p>
 <h3 id="resources">Resources</h3>
 <ul>
 <li><a href="https://docs.github.com/en/code-security/secret-scanning/about-secret-scanning">https://docs.github.com/en/code-security/secret-scanning/about-secret-scanning</a></li>
