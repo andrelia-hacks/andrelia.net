@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="en-us">
+
+<head>
+  <meta http-equiv="X-Clacks-Overhead" content="GNU Terry Pratchett" />
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Automate Postman Secret Scanning With Trufflehog | Andrelia Hacks Stuff</title>
+<meta name="title" content="Automate Postman Secret Scanning With Trufflehog" />
+<meta name="description" content="Introduction Unintentional secret exposure on the internet is a problem as old as the internet itself. While hunter2 may not have been the first password to be inadvertently shared for everyone to see, it has certainly not been the last. Since then, a significant number of new websites and tools have been released that make it even easier to accidentally disclose credentials, including passwords, private keys, API keys, and more. Some websites, such as Pastebin and its various clones, have been used to maliciously leak dumps of this information." />
+<meta name="keywords" content="" />
+
+
+
+
+
+
+  
+  <meta property="og:title" content="Automate Postman Secret Scanning With Trufflehog" />
+<meta property="og:description" content="Introduction Unintentional secret exposure on the internet is a problem as old as the internet itself. While hunter2 may not have been the first password to be inadvertently shared for everyone to see, it has certainly not been the last. Since then, a significant number of new websites and tools have been released that make it even easier to accidentally disclose credentials, including passwords, private keys, API keys, and more. Some websites, such as Pastebin and its various clones, have been used to maliciously leak dumps of this information." />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="/posts/automate-postman-secret-scanning-with-trufflehog/" /><meta property="article:section" content="posts" />
+<meta property="article:published_time" content="2024-04-26T09:55:12-04:00" />
+<meta property="article:modified_time" content="2024-04-26T09:55:12-04:00" /><meta property="og:site_name" content="Andrelia Hacks Stuff" />
+
+
+  
+  <meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="Automate Postman Secret Scanning With Trufflehog"/>
+<meta name="twitter:description" content="Introduction Unintentional secret exposure on the internet is a problem as old as the internet itself. While hunter2 may not have been the first password to be inadvertently shared for everyone to see, it has certainly not been the last. Since then, a significant number of new websites and tools have been released that make it even easier to accidentally disclose credentials, including passwords, private keys, API keys, and more. Some websites, such as Pastebin and its various clones, have been used to maliciously leak dumps of this information."/>
+
+
+  
+  <meta itemprop="name" content="Automate Postman Secret Scanning With Trufflehog">
+<meta itemprop="description" content="Introduction Unintentional secret exposure on the internet is a problem as old as the internet itself. While hunter2 may not have been the first password to be inadvertently shared for everyone to see, it has certainly not been the last. Since then, a significant number of new websites and tools have been released that make it even easier to accidentally disclose credentials, including passwords, private keys, API keys, and more. Some websites, such as Pastebin and its various clones, have been used to maliciously leak dumps of this information."><meta itemprop="datePublished" content="2024-04-26T09:55:12-04:00" />
+<meta itemprop="dateModified" content="2024-04-26T09:55:12-04:00" />
+<meta itemprop="wordCount" content="604">
+<meta itemprop="keywords" content="" />
+
+<meta name="referrer" content="no-referrer-when-downgrade" />
+
+  
+  <link href="/original.min.css" rel="stylesheet">
+
+  
+    
+    <link href="/syntax.min.css" rel="stylesheet">
+  
+
+  
+
+  
+</head>
+
+<body>
+  <header><a class="skip-link" href="#main-content">Skip to main content</a>
+
+<a href="/" class="title"><h1>Andrelia Hacks Stuff</h1></a>
+<nav>
+<a href='/index.xml'>RSS</a>
+
+
+
+
+
+
+
+</nav>
+</header>
+  <main id="main-content">
+
+<h1>Automate Postman Secret Scanning With Trufflehog</h1>
+<p class="byline">
+  <time datetime='2024-04-26' pubdate>
+    2024-04-26
+  </time>
+  
+</p>
+
+<content>
+  <h2 id="introduction">Introduction</h2>
+<p>Unintentional secret exposure on the internet is a problem as old as the internet itself. While <code>hunter2</code> may not have been the first password to be inadvertently shared for everyone to see, it has certainly not been the last. Since then, a significant number of new websites and tools have been released that make it even easier to accidentally disclose credentials, including passwords, private keys, API keys, and more. Some websites, such as Pastebin and its various clones, have been used to maliciously leak dumps of this information. Others, like GitHub are taking active steps to detect and alert on these credentials to prevent their misuse. Lately, I have been working with a team researching scanning for secrets in Postman.</p>
+<h2 id="common-sources-of-secrets-in-postman">Common Sources of Secrets in Postman</h2>
+<p>Postman offers a number of ways to manage data used in making API calls. Some of this is protected, but much of it is not. The most common sources of credentials are the request headers and environment variables. However, credentials can easily be found in a number of other places as well.</p>
+<!-- raw HTML omitted -->
+<figure><img src="/images/postman/environment.png"
+         alt="A screenshot of part of the variables section of the environment tab in Postman"/><figcaption>
+            <p>Environment Variables</p>
+        </figcaption>
+</figure>
+
+<figure><img src="/images/postman/params.png"
+         alt="A screenshot of part of the Params tab in a request in Postman"/><figcaption>
+            <p>Params</p>
+        </figcaption>
+</figure>
+
+<figure><img src="/images/postman/authorization.png"
+         alt="A screenshot of part of the Authorization tab in a request in Postman"/><figcaption>
+            <p>Authorization</p>
+        </figcaption>
+</figure>
+
+<figure><img src="/images/postman/headers.png"
+         alt="A screenshot of part of the Headers tab in a request in Postman"/><figcaption>
+            <p>Headers</p>
+        </figcaption>
+</figure>
+
+<!-- raw HTML omitted -->
+<figure><img src="/images/postman/pre-request-script.png"
+         alt="A screenshot of part of the Pre-request Script tab in a request in Postman"/><figcaption>
+            <p>Params</p>
+        </figcaption>
+</figure>
+
+<h2 id="starting-the-automation-process">Starting the Automation Process</h2>
+<p>However, there is an easier way to get this information in a programatic way: using the Postman API. If you know the request ID of your target request, you can get the JSON data directly without an API key.</p>
+<figure><img src="/images/postman/api.png"
+         alt="A screenshot of the Postman API output of a request"/><figcaption>
+            <p>Postman API</p>
+        </figcaption>
+</figure>
+
+<p>This means that we can start with a file including a list of unique URLs found on the Postman network and filter out the ones that have request IDs:</p>
+
+
+
+
+
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-fallback" data-lang="fallback"><span style="display:flex;"><span>cat unique_urls.json |jq -r .[] &gt; urls
+</span></span><span style="display:flex;"><span>grep &#34;/request/&#34; urls &gt; requests</span></span></code></pre></div><p>Then we can modify those URLs to use the Postman API syntax:</p>
+<figure><img src="/images/postman/requests.png"
+         alt="A screenshot a file containing a list of Postman API requests"/><figcaption>
+            <p>Postman API Request URLs</p>
+        </figcaption>
+</figure>
+
+<p>Fetch all of these URLs using your favorite tool, save them locally, and now you can use Trufflehog to scan for secrets in these request files.</p>
+<figure><img src="/images/postman/trufflehog-filesystem.png"
+         alt="A screenshot of a number of Trufflehog verified secrets"/><figcaption>
+            <p>Verified Secrets</p>
+        </figcaption>
+</figure>
+
+<p>This workflow is great, but we can go a step further and automate the process of fetching request IDs.</p>
+<h2 id="automating-the-search">Automating the Search</h2>
+<p>There are two ways to automate the search on Postman; however, it is worth noting that both methods are limited to 200 (ish) results. This means that more specific search terms will provide better results with a smaller number of requests hidden by this cap.</p>
+<figure><img src="/images/postman/ws-search.png"
+         alt="A screenshot of a request and response in Caido showing the parameters for the Web Socket method"/><figcaption>
+            <p>Method 1: Websockets (POST <a href="https://web.postman.co/_api/ws/proxy">https://web.postman.co/_api/ws/proxy</a>)</p>
+        </figcaption>
+</figure>
+
+<p>Using the Postman websockets API allows for a machine-friendly way to automatically gather data. This works well as long as Postman supports it and allows it to be used.</p>
+<figure><img src="/images/postman/selenium-search.png"
+         alt="A screenshot of the Selenium driven workflow method"/><figcaption>
+            <p>Method 2: Selenium</p>
+        </figcaption>
+</figure>
+
+<p>If (or when) the Postman websockets API becomes inaccessible for any reason, you can use Selenium or other browser automation tools that are typically used for integration testing to navigate the Postman website for you and extract relevant data.</p>
+<h2 id="optimizing-the-search">Optimizing the Search</h2>
+<p>In order to maximize the signal-to-noise ratio in a search in an attempt to stay below the results cap where possible, our team has created a tool that fetches domains that are in-scope for bug bounty programs: <a href="https://github.com/devcoinfet/postman_research">devcoinfet/postman_research</a>.</p>
+<figure><img src="/images/postman/postman_research-tool.png"
+         alt="A screenshot of the files and README of the postman_research GitHub repository"/><figcaption>
+            <p>Postman scraping and parsing tooling</p>
+        </figcaption>
+</figure>
+
+<p>This still has room for improvement in terms of reducing noise further; however, the tooling has already resulted in a number of reported findings.</p>
+<h2 id="coming-soon-even-more-automation">Coming Soon: Even More Automation</h2>
+<p>Recently, Truffle Security released a post on this subject (<a href="https://trufflesecurity.com/blog/postman-carries-lots-of-secrets">Postman Carries Lots of Secrets</a>) that details an additional tool we can use: using <code>trufflehog</code> to directly search target workspaces. At the time of writing, I have not been able to get this command to work, but will definitely keep an eye on it. This support would allow searching for workspaces specifically and scanning for secrets that way.</p>
+<h3 id="resources">Resources</h3>
+<ul>
+<li><a href="https://docs.github.com/en/code-security/secret-scanning/about-secret-scanning">https://docs.github.com/en/code-security/secret-scanning/about-secret-scanning</a></li>
+<li><a href="https://hackerone.com/reports/1523651">https://hackerone.com/reports/1523651</a></li>
+<li><a href="https://github.com/devcoinfet/postman_research">https://github.com/devcoinfet/postman_research</a></li>
+<li><a href="https://trufflesecurity.com/blog/postman-carries-lots-of-secrets">https://trufflesecurity.com/blog/postman-carries-lots-of-secrets</a></li>
+</ul>
+
+</content>
+<p>
+  
+</p>
+
+
+  </main>
+  <footer><small>
+  copyleft 2024 andrelia, do whatever you want with this content
+</small></footer>
+
+    
+</body>
+
+</html>

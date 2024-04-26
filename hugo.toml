@@ -2,8 +2,15 @@ baseURL = '/'
 languageCode = 'en-us'
 title = 'Andrelia Hacks Stuff'
 theme = "hugo-bearcub"
+copyright = "copyleft 2024 andrelia, do whatever you want with this content"
 defaultContentLanguage = "en"
 
+[languages]
+  [languages.en]
+    disabled = false
+    languageCode = 'en-us'
+    languageName = 'English'
+    weight = 0
 
 [params]
   description = "Andrelia Hacks Stuff"

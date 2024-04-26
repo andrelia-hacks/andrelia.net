@@ -2,17 +2,20 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   <url>
-    <loc>//localhost:1313/</loc>
+    <loc>/</loc>
+    <lastmod>2024-04-26T09:55:12-04:00</lastmod>
+  </url><url>
+    <loc>/posts/automate-postman-secret-scanning-with-trufflehog/</loc>
+    <lastmod>2024-04-26T09:55:12-04:00</lastmod>
+  </url><url>
+    <loc>/posts/</loc>
+    <lastmod>2024-04-26T09:55:12-04:00</lastmod>
+  </url><url>
+    <loc>/posts/t-mobile-signing-requests-with-proof-of-possession-pop-tokens/</loc>
     <lastmod>2024-03-22T14:11:45-04:00</lastmod>
   </url><url>
-    <loc>//localhost:1313/posts/</loc>
-    <lastmod>2024-03-22T14:11:45-04:00</lastmod>
+    <loc>/categories/</loc>
   </url><url>
-    <loc>//localhost:1313/posts/t-mobile-signing-requests-with-proof-of-possession-pop-tokens/</loc>
-    <lastmod>2024-03-22T14:11:45-04:00</lastmod>
-  </url><url>
-    <loc>//localhost:1313/categories/</loc>
-  </url><url>
-    <loc>//localhost:1313/tags/</loc>
+    <loc>/tags/</loc>
   </url>
 </urlset>
