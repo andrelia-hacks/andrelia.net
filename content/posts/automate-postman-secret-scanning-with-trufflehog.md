@@ -7,7 +7,7 @@ draft = false
 
 ## Introduction
 
-Unintentional secret exposure on the internet is a problem as old as the internet itself. While `hunter2` may not have been the first password to be inadvertently shared for everyone to see, it has certainly not been the last. Since then, a significant number of new websites and tools have been released that make it even easier to accidentally disclose credentials, including passwords, private keys, API keys, and more. Some websites, such as Pastebin and its various clones, have been used to maliciously leak dumps of this information. Others, like GitHub are taking active steps to detect and alert on these credentials to prevent their misuse. Lately, I have been working with a team researching scanning for secrets in Postman.
+Unintentional secret exposure on the internet is a problem as old as the internet itself. While `hunter2` may not have been the first password to be [inadvertently shared for everyone to see](https://archive.is/0y1yT), it has certainly not been the last. Since then, a significant number of new websites and tools have been released that make it even easier to accidentally disclose credentials, including passwords, private keys, API keys, and more. Some websites, such as Pastebin and its various clones, have been used to maliciously leak dumps of this information. Others, like GitHub are taking active steps to detect and alert on these credentials to prevent their misuse. Lately, I have been working with a team researching scanning for secrets in Postman.
 
 ## Common Sources of Secrets in Postman
 
